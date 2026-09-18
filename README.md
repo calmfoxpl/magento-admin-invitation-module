@@ -56,7 +56,7 @@ The target directory name is not free: Magento reads `app/code/*/*/registration.
 
 ## Configuration
 
-*Stores → Configuration → Security → Administrator Invitations.* Everything has a default, so the module works without opening this page.
+*Stores → Configuration → Calmfox → Administrator Invitations.* Everything has a default, so the module works without opening this page.
 
 | Setting | Default | What it does |
 |---|---|---|

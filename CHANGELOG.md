@@ -5,6 +5,17 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+### Fixed
+
+- Invitation and password reset e-mails are written in the language chosen for the recipient,
+  subject and dates included. Magento renders a transactional e-mail in the language of the
+  store view it is sent from and filters the subject after that, so a Polish body could arrive
+  with an English date under an English subject.
+
+### Changed
+
+- The settings moved out of Magento's *Security* tab into a *Calmfox* tab of their own.
+
 ## [1.0.0] - 2026-09-17
 
 ### Added

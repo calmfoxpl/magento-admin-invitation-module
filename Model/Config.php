@@ -6,7 +6,7 @@ namespace Calmfox\AdminInvitation\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
-/** Typed access to Stores > Configuration > Security > Administrator Invitations. */
+/** Typed access to Stores > Configuration > Calmfox > Administrator Invitations. */
 class Config
 {
     public const XML_PATH = 'calmfox_admin_invitation/';
