@@ -1,0 +1,21 @@
+/*
+ * The Calmfox mark on our own tab in Stores > Configuration.
+ *
+ * Magento puts the tab's class attribute straight onto the block it draws, so one class is
+ * all the hook we need. Every Calmfox module ships this file and the mark, because each has
+ * to look right on its own; installed together they simply draw the same fox twice.
+ *
+ * This is decoration. If a future admin theme renders the tab differently the selector stops
+ * matching, the fox is gone and the settings are exactly where they were.
+ */
+
+.config-nav-block.calmfox-config-tab > .admin__page-nav-title strong:before {
+    background: url('../images/calmfox.svg') no-repeat center center;
+    background-size: contain;
+    content: '';
+    display: inline-block;
+    height: 1.8rem;
+    margin-right: .8rem;
+    vertical-align: -.35rem;
+    width: 1.8rem;
+}

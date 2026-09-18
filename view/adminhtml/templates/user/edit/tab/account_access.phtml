@@ -1,0 +1,45 @@
+<?php
+/**
+ * @var \Calmfox\AdminInvitation\Block\Adminhtml\User\Edit\Tab\AccountAccess $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+$pending = $block->isPending();
+$formId = 'calmfox-access-link-form';
+?>
+<div class="calmfox-account-access">
+    <div class="admin__fieldset-wrapper-content">
+        <p>
+            <?php if ($pending): ?>
+                <?= $block->escapeHtml(__('This administrator has not accepted the invitation yet. You can send it again with a new link.')) ?>
+            <?php else: ?>
+                <?= $block->escapeHtml(__('Send this administrator an e-mail with a link to set a new password themselves. Their current password keeps working until they use it.')) ?>
+            <?php endif; ?>
+        </p>
+
+        <form action="<?= $block->escapeUrl($block->getAccessLinkUrl()) ?>" method="post" id="<?= /* @noEscape */ $formId ?>">
+            <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>"/>
+            <button type="submit" class="action-default" id="calmfox-access-link-button">
+                <span>
+                    <?= $pending
+                        ? $block->escapeHtml(__('Send the invitation again'))
+                        : $block->escapeHtml(__('Send a password reset link')) ?>
+                </span>
+            </button>
+        </form>
+    </div>
+</div>
+<?php
+$script = <<<JS
+require(['jquery', 'Magento_Ui/js/modal/confirm'], function (\$, confirm) {
+    \$('#{$formId}').on('submit', function (event) {
+        event.preventDefault();
+        var form = this;
+        confirm({
+            content: '{$block->escapeJs($block->getConfirmMessage())}',
+            actions: { confirm: function () { form.submit(); } }
+        });
+    });
+});
+JS;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $script, false) ?>

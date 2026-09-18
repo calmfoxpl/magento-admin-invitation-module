@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+    Stores > Configuration > Calmfox > Administrator Invitations. Everything has a default,
+    so the module works without visiting this page.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!--
+            One tab of our own, shared by every Calmfox module. Each module declares it
+            identically, so each still works on its own and Magento merges the declarations.
+            The fox is hung on the class named here; see css/config-tab.css.
+        -->
+        <tab id="calmfox" translate="label" sortOrder="250" class="calmfox-config-tab">
+            <label>Calmfox</label>
+        </tab>
+        <section id="calmfox_admin_invitation" translate="label" type="text" sortOrder="510" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Administrator Invitations</label>
+            <tab>calmfox</tab>
+            <resource>Calmfox_AdminInvitation::config</resource>
+
+            <group id="invitation" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Invitations</label>
+                <field id="ttl_days" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Invitation Link Validity (days)</label>
+                    <comment>After this time the link stops working and the invitation has to be sent again. Password reset links use "Recovery Link Expiration Period" from Advanced > Admin > Security.</comment>
+                    <validate>required-entry validate-digits validate-greater-than-zero</validate>
+                </field>
+            </group>
+
+            <group id="password" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Password Policy</label>
+                <field id="min_length" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Minimum Length</label>
+                    <comment>At least 8. Magento's own rule (7 characters, letters and digits) still applies on top.</comment>
+                    <validate>required-entry validate-digits validate-number-range number-range-8-4096</validate>
+                </field>
+                <field id="min_strength" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Minimum Strength</label>
+                    <comment>An entropy estimate of the password, the same as Symfony's PasswordStrength constraint. Length alone lets "aaaaaaaaaaaa" through; this does not.</comment>
+                    <source_model>Calmfox\AdminInvitation\Model\Config\Source\Strength</source_model>
+                </field>
+                <field id="not_compromised" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Reject Passwords Found in Data Breaches</label>
+                    <comment>Asks the haveibeenpwned.com API with the first five characters of the password's SHA-1 hash; the password itself never leaves the server. If the API cannot be reached, the password is accepted.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="generated_length" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Generated Password Length</label>
+                    <comment>Length of the password the "Generate a secure password" button suggests (12 to 64).</comment>
+                    <validate>required-entry validate-digits validate-number-range number-range-12-64</validate>
+                </field>
+                <field id="apply_everywhere" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Apply to All Administrator Password Changes</label>
+                    <comment>Yes: the policy also applies to "Forgot your password?", Account Setting and the user form in System > All Users. No: only to passwords set through an invitation.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="emails" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>E-mails</label>
+                <field id="identity" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="invitation_template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Invitation Template</label>
+                    <comment>Variables: user, invitation_url, valid_until, store.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="password_reset_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Password Reset Link Template</label>
+                    <comment>Sent when another administrator clicks "Send a password reset link". Variables: user, reset_url, valid_until, store.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

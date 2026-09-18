@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+    The acceptance page reuses the admin login screen (admin_login handle): the same logo, the
+    same centred card, the same footer. Only the form in login.content is ours, so any admin
+    theme applies to it untouched.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-login" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="admin_login"/>
+    <head>
+        <css src="Calmfox_AdminInvitation::css/invitation.css"/>
+    </head>
+    <body>
+        <!--
+            No page of this flow has a date field, so the admin date picker is weight the
+            sign-in screen does not need. It also keeps these pages working where Magento
+            itself does not: its calendar block reads AM/PM markers straight out of the
+            locale, and locales that have none - Polish among them, in current ICU - make it
+            fatal. A page somebody is locked out behind must not depend on that.
+        -->
+        <referenceBlock name="head.calendar" remove="true"/>
+        <referenceContainer name="login.content">
+            <block class="Calmfox\AdminInvitation\Block\Adminhtml\Accept\Form" name="calmfox.invitation.accept.form"/>
+        </referenceContainer>
+    </body>
+</page>

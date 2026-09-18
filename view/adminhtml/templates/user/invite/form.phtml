@@ -1,0 +1,83 @@
+<?php
+/**
+ * The invite form. The markup is Magento's own admin fieldset, so the panel theme styles it.
+ *
+ * @var \Calmfox\AdminInvitation\Block\Adminhtml\User\Invite\Form $block
+ */
+$roles = $block->getRoleOptions();
+$selectedRole = $block->getRoleId();
+$selectedLocale = $block->getLocale();
+?>
+<div class="calmfox-invitation-form">
+    <form action="<?= $block->escapeUrl($block->getPostUrl()) ?>" method="post" id="calmfox-invite-form"
+          data-mage-init='{"validation": {}}'>
+        <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>"/>
+
+        <fieldset class="admin__fieldset">
+            <legend class="admin__legend"><span><?= $block->escapeHtml(__('Invite Administrator')) ?></span></legend><br/>
+
+            <p class="calmfox-invitation-lead">
+                <?= $block->escapeHtml(__('We will e-mail a link to this address. The invitee sets their own name and a strong password, and then lands in the panel already signed in.')) ?>
+            </p>
+
+            <div class="admin__field _required field-email">
+                <label class="admin__field-label" for="calmfox-invite-email">
+                    <span><?= $block->escapeHtml(__('E-mail address')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text" id="calmfox-invite-email" name="email" class="admin__control-text"
+                           value="<?= $block->escapeHtmlAttr($block->getEmail()) ?>"
+                           data-validate="{required:true, 'validate-email':true}" autofocus autocomplete="off"/>
+                    <div class="admin__field-note">
+                        <?= $block->escapeHtml(__('The account is created inactive and without a password until the invitation is accepted.')) ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin__field _required field-role">
+                <label class="admin__field-label" for="calmfox-invite-role">
+                    <span><?= $block->escapeHtml(__('User Role')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="calmfox-invite-role" name="role_id" class="admin__control-select"
+                            data-validate="{required:true}">
+                        <option value=""><?= $block->escapeHtml(__('-- Please Select --')) ?></option>
+                        <?php foreach ($roles as $roleId => $roleName): ?>
+                            <option value="<?= (int) $roleId ?>" <?= $selectedRole === (int) $roleId ? 'selected' : '' ?>>
+                                <?= $block->escapeHtml($roleName) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin__field field-interface-locale">
+                <label class="admin__field-label" for="calmfox-invite-locale">
+                    <span><?= $block->escapeHtml(__('Interface Locale')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="calmfox-invite-locale" name="interface_locale" class="admin__control-select">
+                        <?php foreach ($block->getLocaleOptions() as $locale): ?>
+                            <option value="<?= $block->escapeHtmlAttr($locale['value']) ?>"
+                                <?= $selectedLocale === $locale['value'] ? 'selected' : '' ?>>
+                                <?= $block->escapeHtml($locale['label']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="admin__field-note">
+                        <?= $block->escapeHtml(__('The language of the invitation e-mail and of the panel, until the invitee changes it.')) ?>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="calmfox-invitation-actions">
+            <button type="submit" class="action-default scalable action-primary">
+                <span><?= $block->escapeHtml(__('Send Invitation')) ?></span>
+            </button>
+            <a href="<?= $block->escapeUrl($block->getUsersUrl()) ?>" class="action-default calmfox-cancel">
+                <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+            </a>
+        </div>
+    </form>
+</div>

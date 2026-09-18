@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Unit tests for the framework-free core: the password policy, the strength estimate, the
+    breach protocol and the invitation tokens. They need no Magento and no database:
+
+        vendor/bin/phpunit -c phpunit.xml.dist
+
+    (any PHPUnit 10+ works; the package needs no `composer install` of its own).
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         failOnWarning="true"
+         failOnRisky="true"
+         beStrictAboutOutputDuringTests="true">
+    <testsuites>
+        <testsuite name="calmfox-admin-invitation">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">Core</directory>
+        </include>
+    </source>
+</phpunit>

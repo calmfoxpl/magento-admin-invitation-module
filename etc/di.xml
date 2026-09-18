@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+    Three things are wired here:
+
+    1. The password policy hooks into Magento's own UserValidationRules::addPasswordRules(), so
+       it is checked wherever Magento checks a new admin password: the invitation page, the
+       "Forgot your password?" page, Account Setting and the user form. No page is replaced.
+    2. The console command.
+    3. The HTTP client for the breach check gets its own instance: Magento shares objects, and
+       a Curl client remembers headers and options between calls.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\User\Model\UserValidationRules">
+        <plugin name="calmfox_admin_invitation_password_policy" type="Calmfox\AdminInvitation\Plugin\PasswordPolicyRules" sortOrder="100"/>
+    </type>
+
+    <virtualType name="Calmfox\AdminInvitation\Model\Password\BreachHttpClient" type="Magento\Framework\HTTP\Client\Curl"/>
+    <type name="Calmfox\AdminInvitation\Model\Password\BreachLookup">
+        <arguments>
+            <argument name="httpClient" xsi:type="object" shared="false">Calmfox\AdminInvitation\Model\Password\BreachHttpClient</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="calmfox_admin_invite" xsi:type="object">Calmfox\AdminInvitation\Console\Command\InviteCommand</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

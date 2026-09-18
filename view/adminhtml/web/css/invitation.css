@@ -1,0 +1,106 @@
+/*
+ * Two screens' worth of styling, and nothing more: the fields, buttons and messages are
+ * Magento's own admin classes, so a different admin theme restyles them without touching this
+ * file. Sizes are in rem, and the admin sets html { font-size: 62.5% }, so 1rem = 10px here.
+ */
+
+.calmfox-invitation-form {
+    background: #fff;
+    border: 1px solid #adadad;
+    max-width: 68rem;
+    padding: 2.5rem 3rem 3rem;
+}
+
+.calmfox-invitation-lead {
+    color: #303030;
+    margin: 0 0 2rem;
+    max-width: 52rem;
+}
+
+.calmfox-invitation-actions {
+    border-top: 1px solid #e3e3e3;
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+}
+
+.calmfox-invitation-actions .calmfox-cancel {
+    line-height: 3.2rem;
+    text-decoration: none;
+}
+
+.calmfox-account-access p {
+    margin: 0 0 1.5rem;
+    max-width: 60rem;
+}
+
+/* The acceptance page: the login card is narrow, so the generator gets its own row. */
+.calmfox-generator {
+    border-top: 1px solid #e3e3e3;
+    margin: 0 0 2.5rem;
+    padding-top: 1.5rem;
+}
+
+.calmfox-generator .calmfox-generate {
+    width: 100%;
+}
+
+.calmfox-generated {
+    margin-top: 1rem;
+}
+
+.calmfox-generated-value {
+    font-family: 'Courier New', Courier, monospace;
+    width: 100%;
+}
+
+/* The two steps of the acceptance page. */
+.calmfox-steps {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0 0 2.5rem;
+    padding: 0;
+}
+
+.calmfox-step-marker {
+    align-items: center;
+    color: #a6a6a6;
+    display: flex;
+    gap: .8rem;
+}
+
+.calmfox-step-number {
+    align-items: center;
+    background: #f5f5f5;
+    border: 1px solid #d6d6d6;
+    border-radius: 50%;
+    color: #a6a6a6;
+    display: inline-flex;
+    font-weight: 600;
+    height: 2.6rem;
+    justify-content: center;
+    width: 2.6rem;
+}
+
+.calmfox-step-marker._current {
+    color: #303030;
+}
+
+.calmfox-step-marker._current .calmfox-step-number {
+    background: #eb5202;
+    border-color: #eb5202;
+    color: #fff;
+}
+
+.calmfox-step-marker._done .calmfox-step-number {
+    background: #fff;
+    border-color: #eb5202;
+    color: #eb5202;
+}
+
+.calmfox-accept .calmfox-step-actions .actions,
+.calmfox-accept .form-actions .actions {
+    padding: 3rem 0 0;
+}

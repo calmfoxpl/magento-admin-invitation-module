@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+    The invite form, inside the ordinary admin page (menu, header, breadcrumbs), so it sits
+    among the user screens it belongs to.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Calmfox_AdminInvitation::css/invitation.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Calmfox\AdminInvitation\Block\Adminhtml\User\Invite\Form" name="calmfox.invitation.invite.form"/>
+        </referenceContainer>
+    </body>
+</page>

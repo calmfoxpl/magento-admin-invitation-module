@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+    One row per invited administrator. The account itself lives in admin_user, created disabled
+    and with a random password nobody knows; this row says that it is waiting for its owner and
+    holds the hash of the link token. The row stays after acceptance (accepted_at) as a record
+    of how the account came to be. Deleting the user deletes the row.
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="calmfox_admin_invitation" resource="default" engine="innodb" comment="Administrator invitations">
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false" identity="false" comment="Invited admin user"/>
+        <column xsi:type="varchar" name="token_hash" nullable="false" length="64" comment="SHA-256 of the link token"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Invited at"/>
+        <column xsi:type="timestamp" name="expires_at" on_update="false" nullable="false" comment="Link valid until"/>
+        <column xsi:type="timestamp" name="accepted_at" on_update="false" nullable="true" comment="Accepted at"/>
+        <column xsi:type="int" name="invited_by" unsigned="true" nullable="true" identity="false" comment="Inviting admin user"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="user_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CALMFOX_ADMIN_INVITATION_USER_ID_ADMIN_USER_USER_ID" table="calmfox_admin_invitation" column="user_id" referenceTable="admin_user" referenceColumn="user_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="CALMFOX_ADMIN_INVITATION_INVITED_BY_ADMIN_USER_USER_ID" table="calmfox_admin_invitation" column="invited_by" referenceTable="admin_user" referenceColumn="user_id" onDelete="SET NULL"/>
+    </table>
+</schema>

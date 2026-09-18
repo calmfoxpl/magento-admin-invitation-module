@@ -1,0 +1,170 @@
+<?php
+/**
+ * The page behind the invitation link, rendered on the admin sign-in screen.
+ *
+ * It asks in two steps — who you are, then your password — because the sign-in card is narrow
+ * and a single column of five fields scrolls past the fold on a laptop. Both steps live in one
+ * form and are posted together: the account is created in one go, so a half-finished setup
+ * never leaves an account behind. Without JavaScript both steps are simply visible at once and
+ * the form still works.
+ *
+ * @var \Calmfox\AdminInvitation\Block\Adminhtml\Accept\Form $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+$initialStep = $block->getInitialStep();
+?>
+<form method="post" action="<?= $block->escapeUrl($block->getPostUrl()) ?>" id="calmfox-accept-form"
+      data-mage-init='{"form": {}, "validation": {}}' autocomplete="off">
+    <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>"/>
+
+    <fieldset class="admin__fieldset calmfox-accept" data-initial-step="<?= (int) $initialStep ?>">
+        <legend class="admin__legend">
+            <span><?= $block->escapeHtml(__('Set up your account')) ?></span>
+        </legend><br/>
+
+        <p class="admin__field-info">
+            <?= $block->escapeHtml(__('You have been invited to the administration panel as %1.', $block->getEmail())) ?>
+        </p>
+
+        <ol class="calmfox-steps" id="calmfox-steps" hidden>
+            <li class="calmfox-step-marker" data-step-marker="1">
+                <span class="calmfox-step-number">1</span>
+                <span class="calmfox-step-name"><?= $block->escapeHtml(__('Your details')) ?></span>
+            </li>
+            <li class="calmfox-step-marker" data-step-marker="2">
+                <span class="calmfox-step-number">2</span>
+                <span class="calmfox-step-name"><?= $block->escapeHtml(__('Your password')) ?></span>
+            </li>
+        </ol>
+
+        <div class="calmfox-step" data-step="1">
+            <div class="admin__field _required field-firstname">
+                <label class="admin__field-label" for="calmfox-firstname">
+                    <span><?= $block->escapeHtml(__('First Name')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text" id="calmfox-firstname" name="firstname" class="admin__control-text"
+                           value="<?= $block->escapeHtmlAttr($block->getFirstName()) ?>"
+                           data-validate="{required:true}" autocomplete="given-name"/>
+                </div>
+            </div>
+
+            <div class="admin__field _required field-lastname">
+                <label class="admin__field-label" for="calmfox-lastname">
+                    <span><?= $block->escapeHtml(__('Last Name')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text" id="calmfox-lastname" name="lastname" class="admin__control-text"
+                           value="<?= $block->escapeHtmlAttr($block->getLastName()) ?>"
+                           data-validate="{required:true}" autocomplete="family-name"/>
+                </div>
+            </div>
+
+            <div class="admin__field _required field-username">
+                <label class="admin__field-label" for="calmfox-username">
+                    <span><?= $block->escapeHtml(__('User Name')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text" id="calmfox-username" name="username" class="admin__control-text"
+                           value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>"
+                           data-validate="{required:true}" autocomplete="username"/>
+                    <div class="admin__field-note"><?= $block->escapeHtml(__('This is what you will sign in with.')) ?></div>
+                </div>
+            </div>
+
+            <div class="form-actions calmfox-step-actions" hidden data-step-actions="1">
+                <div class="actions">
+                    <button type="button" class="action-login action-primary" id="calmfox-next">
+                        <span><?= $block->escapeHtml(__('Continue')) ?></span>
+                    </button>
+                </div>
+                <div class="links">
+                    <a class="action-back" href="<?= $block->escapeUrl($block->getLoginUrl()) ?>">
+                        <?= $block->escapeHtml(__('Back to Sign in')) ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="calmfox-step" data-step="2">
+            <div class="admin__field _required field-password">
+                <label class="admin__field-label" for="calmfox-password">
+                    <span><?= $block->escapeHtml(__('Password')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="password" id="calmfox-password" name="password" class="admin__control-text"
+                           data-validate="{required:true, 'validate-admin-password':true}" autocomplete="new-password"/>
+                    <div class="admin__field-note">
+                        <?= $block->escapeHtml(__('At least %1 characters and hard to guess: mix upper and lower case letters, digits and symbols.', $block->getMinLength())) ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin__field _required field-confirmation">
+                <label class="admin__field-label" for="calmfox-confirmation">
+                    <span><?= $block->escapeHtml(__('Confirm Password')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="password" id="calmfox-confirmation" name="confirmation" class="admin__control-text"
+                           data-validate="{required:true, equalTo:'#calmfox-password'}" autocomplete="new-password"/>
+                </div>
+            </div>
+
+            <div class="calmfox-generator" id="calmfox-generator" data-length="<?= (int) $block->getGeneratedLength() ?>">
+                <button type="button" class="action-default calmfox-generate" id="calmfox-generate">
+                    <span><?= $block->escapeHtml(__('Generate a secure password')) ?></span>
+                </button>
+                <div class="calmfox-generated" id="calmfox-generated" hidden>
+                    <input type="text" class="admin__control-text calmfox-generated-value" id="calmfox-generated-value"
+                           readonly aria-label="<?= $block->escapeHtmlAttr(__('Generated password')) ?>"/>
+                    <div class="admin__field-note">
+                        <?= $block->escapeHtml(__('Save it in your password manager before you continue.')) ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <div class="actions">
+                    <button type="submit" class="action-login action-primary">
+                        <span><?= $block->escapeHtml(__('Save and sign in')) ?></span>
+                    </button>
+                </div>
+                <div class="links">
+                    <a class="action-back" href="#" id="calmfox-back" hidden>
+                        <?= $block->escapeHtml(__('Back to your details')) ?>
+                    </a>
+                    <a class="action-back" href="<?= $block->escapeUrl($block->getLoginUrl()) ?>" id="calmfox-back-to-login">
+                        <?= $block->escapeHtml(__('Back to Sign in')) ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<?php
+$script = <<<JS
+require([
+    'jquery',
+    'Calmfox_AdminInvitation/js/password-generator',
+    'Calmfox_AdminInvitation/js/accept-steps'
+], function (\$, generator, steps) {
+    generator({
+        root: '#calmfox-generator',
+        button: '#calmfox-generate',
+        result: '#calmfox-generated',
+        value: '#calmfox-generated-value',
+        fields: ['#calmfox-password', '#calmfox-confirmation']
+    });
+
+    steps({
+        form: '#calmfox-accept-form',
+        container: '.calmfox-accept',
+        markers: '#calmfox-steps',
+        next: '#calmfox-next',
+        back: '#calmfox-back',
+        backToLogin: '#calmfox-back-to-login'
+    });
+});
+JS;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $script, false) ?>

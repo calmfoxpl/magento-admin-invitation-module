@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+    Inviting and sending access links reuse Magento's own "All Users" permission: whoever may
+    create administrators may invite them. The only resource of its own guards the configuration.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Calmfox_AdminInvitation::config" title="Administrator Invitations" translate="title" sortOrder="55"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

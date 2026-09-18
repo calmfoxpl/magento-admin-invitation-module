@@ -1,0 +1,33 @@
+<!--@subject {{var email_subject}} @-->
+<!--@vars {
+"var email_subject":"Subject",
+"var store.frontend_name":"Store Name",
+"var user.email":"Invitee E-mail",
+"var invitation_url":"Invitation URL",
+"var valid_until":"Link Valid Until"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "Hello,"}}</p>
+
+<p>{{trans "You have been invited to the administration panel of %store_name. Use the button below to choose your name and password; you will be signed in straight away." store_name=$store.frontend_name}}</p>
+
+<table class="button" width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <table class="inner-wrapper" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tr>
+                    <td align="center">
+                        <a href="{{var invitation_url}}" target="_blank">{{trans "Set up your account"}}</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<p>{{trans "Your e-mail address: %email" email=$user.email}}</p>
+<p>{{trans "The link works until %date. After that, ask for a new invitation." date=$valid_until}}</p>
+<p>{{trans "If you were not expecting this e-mail, you can ignore it."}}</p>
+
+{{template config_path="design/email/footer_template"}}

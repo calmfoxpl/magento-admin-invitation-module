@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+    Panel-only wiring: the "Invite" button on System > All Users and the "Account Access" tab
+    on the administrator's page. Both are plugins on Magento's own blocks, so the grid and
+    the form stay exactly as Magento renders them.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\User\Block\User">
+        <plugin name="calmfox_admin_invitation_invite_button" type="Calmfox\AdminInvitation\Plugin\AddInviteButton"/>
+    </type>
+    <type name="Magento\User\Block\User\Edit\Tabs">
+        <plugin name="calmfox_admin_invitation_account_access_tab" type="Calmfox\AdminInvitation\Plugin\AddAccountAccessTab"/>
+    </type>
+</config>

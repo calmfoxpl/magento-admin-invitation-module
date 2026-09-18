@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!--
+    Both e-mails are HTML in the shop's own transactional layout (header and footer templates
+    from Content > Design > Configuration), so they look like every other e-mail the shop sends.
+    They can be replaced under Marketing > Email Templates and chosen in the module configuration.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="calmfox_admin_invitation_emails_invitation_template" label="Administrator Invitation" file="invitation.html" type="html" module="Calmfox_AdminInvitation" area="frontend"/>
+    <template id="calmfox_admin_invitation_emails_password_reset_template" label="Administrator Password Reset Link" file="password_reset.html" type="html" module="Calmfox_AdminInvitation" area="frontend"/>
+</config>

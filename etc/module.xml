@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+    Loads after Magento_User (the administrators grid, the edit page and the password
+    validation rules the module extends) and Magento_Backend (the admin login layout the
+    public pages reuse).
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Calmfox_AdminInvitation">
+        <sequence>
+            <module name="Magento_Backend"/>
+            <module name="Magento_User"/>
+            <module name="Magento_Email"/>
+        </sequence>
+    </module>
+</config>
