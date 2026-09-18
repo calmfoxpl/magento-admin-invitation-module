@@ -1,0 +1,17 @@
+{
+    "calmfox_admin_invitation": {
+        "column": {
+            "user_id": true,
+            "token_hash": true,
+            "created_at": true,
+            "expires_at": true,
+            "accepted_at": true,
+            "invited_by": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CALMFOX_ADMIN_INVITATION_USER_ID_ADMIN_USER_USER_ID": true,
+            "CALMFOX_ADMIN_INVITATION_INVITED_BY_ADMIN_USER_USER_ID": true
+        }
+    }
+}

@@ -382,4 +382,44 @@ final class WiringTest extends TestCase
 
     /** Strings that read the same in Polish as in English. */
     private const SAME_IN_BOTH = ['Calmfox', '%name,'];
+
+    /**
+     * Magento only applies a declarative schema change that is also listed in the whitelist.
+     * A column added to db_schema.xml and forgotten here is silently never created, and the
+     * code that reads it then fails on a live shop rather than in a test.
+     */
+    public function testEverySchemaColumnIsWhitelisted(): void
+    {
+        $schema = \dirname(__DIR__) . '/etc/db_schema.xml';
+        $whitelist = \dirname(__DIR__) . '/etc/db_schema_whitelist.json';
+        self::assertFileExists($schema);
+        self::assertFileExists($whitelist);
+
+        $xml = simplexml_load_file($schema);
+        self::assertInstanceOf(\SimpleXMLElement::class, $xml);
+
+        /** @var array<string, array{column?: array<string, bool>, constraint?: array<string, bool>}> $listed */
+        $listed = json_decode((string) file_get_contents($whitelist), true, 512, \JSON_THROW_ON_ERROR);
+
+        foreach ($xml->table as $table) {
+            $name = (string) $table['name'];
+            self::assertArrayHasKey($name, $listed, sprintf('table "%s" is missing from the whitelist', $name));
+
+            foreach ($table->column as $column) {
+                self::assertArrayHasKey(
+                    (string) $column['name'],
+                    $listed[$name]['column'] ?? [],
+                    sprintf('column "%s.%s" is missing from the whitelist', $name, (string) $column['name']),
+                );
+            }
+
+            foreach ($table->constraint as $constraint) {
+                self::assertArrayHasKey(
+                    (string) $constraint['referenceId'],
+                    $listed[$name]['constraint'] ?? [],
+                    sprintf('constraint "%s" is missing from the whitelist', (string) $constraint['referenceId']),
+                );
+            }
+        }
+    }
 }
